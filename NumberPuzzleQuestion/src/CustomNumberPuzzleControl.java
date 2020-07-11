@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.*;
 
 class CustomNumberPuzzleControl extends NumberPuzzleControl {
 	public int getWidth() {
@@ -36,18 +37,33 @@ class CustomNumberPuzzleControl extends NumberPuzzleControl {
 		Button buttonClicked = game.getButtonClicked();
 		Button[] buttons = game.getButtons();
 		
-		//Your logic here		
 		
-		return emptyCellId;
+		//Your logic here
+				
+		swapButton(buttons[emptyCellId],buttonClicked);
+		int i=0;
+		for(i=0;i<buttons.length;i++) {
+			if(buttonClicked.equals(buttons[i]))
+				break;
+		}
+	
+		return i;
 
 	}
 	public int[] getRandomNumbersForGrid() {
 		int arr[] = new int[15];
-		
 		//Your logic here
-		int a = getRandomNumber();
-		
-		
+		ArrayList<Integer> list=new ArrayList<Integer>();
+		while(list.size()!=15) {
+			int a = getRandomNumber();
+			if(!list.contains(a%16)&&(a%16)!=0)
+			{
+				list.add(a%16);
+			}
+		}
+		for(int i=0;i<15;i++) {
+			arr[i]=list.get(i);
+		}
 		return arr;
 	}
 	public boolean checkForWinner(Button[] buttons)
@@ -55,8 +71,14 @@ class CustomNumberPuzzleControl extends NumberPuzzleControl {
 		boolean winner = true;
 		
 		// Your Logic here
-		getIntegerArrayOfButtonIds(buttons);
-
+		int[] arr=getIntegerArrayOfButtonIds(buttons);
+		
+		for(int i=0;i<arr.length-1;i++) {
+			if(arr[i]>arr[i+1]) {
+				winner=false;
+				break;
+			}
+		}
 		return winner;
 	}
 }
